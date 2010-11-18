@@ -1,0 +1,174 @@
+\documentclass{article}
+
+%\VignetteIndexEntry{Cause-specific mortality}
+%\VignetteDepends{ wild1 }
+%\VignetteKeyword{ survival }
+ 
+\usepackage{graphics}
+\usepackage{hyperref}
+\hypersetup{colorlinks,urlcolor=blue,linkcolor=white}
+
+\usepackage{hanging}
+
+%Allows comments and prevents reformatting of code (from Ihaka 2009)
+%Note that Ihaka (2009) gives this as "FALSE," which is, I think, incorrect.
+\SweaveOpts{keep.source=TRUE}
+
+%First line of paragraph not indented
+\setlength{\parindent}{0in}
+
+\begin{document}
+
+%Things to do:
+%coyote.mort--Convert "fate" to a factor.  Get descriptive labels from Heisey and Patterson.
+%Help files--Update to include 'integer' as a permitted class of input.
+%Help files--Update arguments to match revisions.
+%Help files--Add 2 examples based on coyote data.
+
+
+<<echo=false,results=hide>>=
+options(continue=" ",width=60,digits=2)
+options(useFancyQuotes=FALSE)  #Fixes problems with character substitution
+options(SweaveHooks=list(fig=function()
+par(mar=c(5.1, 4.1, 1.1, 2.1))))
+@
+
+\title{Using \texttt{csm} to estimate cause-specific\\ mortality from left-truncated data}
+\author{Glen A. Sargeant\\[0.10cm]
+USGS Northern Prairie Wildlife Research Center\\[0.10cm]
+\texttt{gsargeant@usgs.gov}\\}
+
+\maketitle
+
+Heisey and Patterson (2006) provided S-Plus code to facilitate estimation of cause-specific mortality from left-truncated survival records (''staggered entry'' in wildlife literature).  Package \textsf{wild1} includes an implementation of their nonparametric cumulative incidence function estimator (function \texttt{csm}), which produces objects of a new class (''\texttt{csm}'').  The package also includes methods for the new class and several functions that facilitate tasks commonly associated with wildlife survival analysis.  This vignette demonstrates an application of the package to the coyote survival data used for examples presented by Heisey and Patterson (2006).\\
+
+\section*{Software}
+Package \textsf{wild1} and required supporting packages must be installed prior to use.  To install \textsf{wild1}, copy the file \texttt{wild1.zip} (available at \url{http://www.npwrc.usgs.gov/staff/sargeant.htm}) to your preferred location, initiate an R session, and use the pull-down "Packages" menu (\texttt{\textsl{Packages>Install package(s) from local zip files}}).\\
+
+See the package DESCRIPTION file for a current list of required supporting packages (available from CRAN, the Comprehensive R Archive Network, via the pull-down "Packages" menu).\\ 
+
+Installed packages must be loaded at the start of each R session or they will not be available for use.  Either \texttt{require()} or \texttt{library()} may be used to load \textsf{wild1}.  Loading \textsf{wild1} will automatically load supporting packages.
+<<results=hide>>= 
+require(wild1)
+@
+
+\section*{Loading and summarizing data}
+This example features coyote survival data originally analyzed by Patterson (1999) and Heisey and Patterson (2006).  The data are provided in \textsf{wild1}, courtesy of Brent Patterson, Ontario Ministry of Natural Resources.\\
+
+The data must be loaded prior to use:
+<<>>=
+data(coyote.mort)
+@ 
+
+Next we will summarize the structure of the data, noting the names, coding, and classes of variables, and print a sample of records.  For our purposes (analysis with \texttt{csm}), times of entry and exit must be represented by numeric vectors, integer vectors, or vectors of class ''\texttt{chron}.''  Events must be indicated by numeric, integer, or logical vectors.  Fates may be represented by numeric vectors, character vectors, or factors. This flexibility of coding facilitates the representation of data by classes that are most appropriate for other planned uses.
+
+<<>>=
+str(coyote.mort,strict.width="cut")
+@
+
+<<echo=F>>=
+oldwidth<- getOption("width")
+options(width=60)
+@
+<<>>=
+head(coyote.mort)
+@
+<<echo=F>>=
+options(width=oldwidth)
+@
+Survival intervals are open on the left and closed on the right, i.e., $\texttt{(entry, exit]}$.\\
+
+\begin{center}
+\fbox{
+\begin{minipage}{4.5in}
+\begin{center}
+\textbf{Recurrent time scales}
+\end{center}
+The sample data exemplify the common practice of pooling years via use of a time scale with a recurrent origin (i.e., dates range from 0 to 365 and individuals contribute 1 record per calendar year).  If data are recorded as ranges of calendar dates (i.e., each individual contributes 1 record and dates may span >1 calendar year), they can be translated with \texttt{partition.intervals}.
+\end{minipage}
+}\\
+\end{center}
+
+We can use \texttt{table} to tally deaths for each fate:
+<<>>=
+table(coyote.mort$fate)
+@
+
+Sample sizes (numbers of records in the risk set) can be computed for each time step, $t$, with \texttt{n.risk} (first 6 times shown):
+<<figure=T,include=T>>=
+head(with(coyote.mort,n.risk(entry,exit,1)))
+@
+
+\section*{Estimating mortality: 1 cause}
+
+We will first estimate mortality due to "harvest," which encompasses several fates named in a vector of causes.  This provision for aggregating fates is a nice feature of \texttt{csm}.
+
+<<>>=
+harvest <- c("snare","shot","trap")
+cause1 <- with(coyote.mort,
+  csm(entry=entry, exit=exit, event=event, 
+    fate=fate, cause=harvest, alpha=0.10))
+@
+
+Subscripts can be used to display particularly relevant results, e.g., probabilities of harvest (\texttt{CIF}) by dates shown (\texttt{time}), with associated confidence limits (\texttt{lcl.90} and \texttt{ucl.90}):  
+<<>>=
+vars <- c("time","CIF","lcl.90","ucl.90")
+na.omit(cause1[vars])
+@
+
+Note that the estimates in Table 3 of Heisey and Patterson (2006) are 90\%, rather than 95\% confidence limits (columns are mislabeled), so our results agree.\\
+                                                              
+Package \textsf{wild1} includes a plotting method (\texttt{plot.csm}) that produces survival curves from objects of class ''\texttt{csm}.''  See the function documentation for available plotting options.
+<<curves1,fig=T,include=F>>=
+plot(cause1)
+@
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{csm-curves1}
+\caption{A sample plot constructed with \texttt{plot.csm}. Depicts harvest mortality of coyotes, with 90\% confidence limits. Data from Heisey and Patterson (2006). }
+\end{center}
+\end{figure}
+
+\section*{Estimating mortality: multiple causes}
+
+If vectors of causes are stored in a list, \texttt{lapply} can be used to compute several estimates in 1 step and store results in a single list:
+<<>>=
+other <- c("strife","car","unknown nat")
+cause.lst <- list(harvest=harvest, other=other)
+csm.lst <- lapply(cause.lst,function(cause.vec){
+  with(coyote.mort,
+    csm(entry=entry, exit=exit, event=event, 
+      fate=fate, cause=cause.vec, alpha=0.10))})  
+str(csm.lst)
+@
+
+The following code generates a compact display of the most relevant results.  Again, note the agreement of results with Table 3 of Heisey and Patterson (2006):
+<<>>=
+lapply(csm.lst,function(output){
+  tail(na.omit(output[vars]),1)})
+@
+
+\texttt{plot.csm} can also be used to plot several survival curves on a single figure.  Arguments shown below 1) suppress confidence limits (\texttt{alpha=NULL}), 2) suppress horizontal reference lines (\texttt{href=FALSE}), 3) specify limits for the y axis (\texttt{ylim=c(0,1)}), and 4) cause the second curve to be represented by a dashed line (\texttt{lty=2}). Specifying \texttt{add=TRUE} prevents R from initiating a new plot or creating a new plotting window, causing the second curve to be plotted along with the first.  In this fashion, which is simpler to implement than describe, any number of curves can be added to the same plot.  
+<<curves2, fig=T,include=F>>=
+plot(csm.lst[[1]],alpha=NULL,href=FALSE,ylim=c(0,1))
+plot(csm.lst[[2]],alpha=NULL,add=TRUE,href=FALSE,
+  lty=2, lwd=2)
+@
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{csm-curves2}
+\caption{A sample plot constructed with \texttt{plot.csm}. Depicts harvest (solid line) and "other" mortality (dashed line) of coyotes. Data from Heisey and Patterson (2006). }
+\end{center}
+\end{figure}
+
+\section*{References}
+
+\begin{hangparas}{0.1in}{1}
+
+Heisey, D. M., and B. R. Patterson. 2006. A review of methods to estimate cause-specific mortality in presence of competing risks.  Journal of Wildlife Management 70(6):1544-1555.\\
+
+Patterson, B. R. 1999. The effects of prey distribution and abundance on eastern coyote life history and predation on white-tailed deer. Dissertation, University of Saskatchewan, Saskatoon, Canada.
+
+\end{hangparas}
+
+\end{document}

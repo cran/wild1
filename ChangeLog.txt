@@ -1,0 +1,3 @@
+v. 1.06--Review draft submitted for approval by USGS.
+
+v. 1.07--Approved release provided via CRAN.
