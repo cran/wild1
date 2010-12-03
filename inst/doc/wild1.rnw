@@ -1,6 +1,6 @@
 \documentclass{article}
 
-%\VignetteIndexEntry{Package \texttt{wild1}}
+%\VignetteIndexEntry{Package wild1}
 %\VignetteDepends{ wild1 }
 %\VignetteKeyword{ survival }
  

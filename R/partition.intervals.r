@@ -42,7 +42,7 @@
   df <- data.frame(id,first,last)
   
   for(i in 1:length(first)){
-     bks <- c(first[i],breaks[breaks>=first[i] & breaks<last[i]],last[i])
+     bks <- c(first[i],breaks[breaks>first[i] & breaks<last[i]],last[i])
      
      if(length(bks)==2){
        output[[i]] <- data.frame(first=bks[1],last=bks[2])

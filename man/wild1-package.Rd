@@ -12,8 +12,8 @@ Provides classes, methods, and examples for use in wildlife research and managem
 \tabular{ll}{
 Package: \tab wild1\cr
 Type: \tab Package\cr
-Version: \tab 1.07\cr
-Date: \tab 2010-11-18\cr
+Version: \tab 1.08\cr
+Date: \tab 2010-12-03\cr
 License: \tab GPL-3 \cr
 LazyLoad: \tab yes\cr
 }

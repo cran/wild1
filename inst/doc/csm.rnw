@@ -84,7 +84,8 @@ Survival intervals are open on the left and closed on the right, i.e., $\texttt{
 \begin{center}
 \textbf{Recurrent time scales}
 \end{center}
-The sample data exemplify the common practice of pooling years via use of a time scale with a recurrent origin (i.e., dates range from 0 to 365 and individuals contribute 1 record per calendar year).  If data are recorded as ranges of calendar dates (i.e., each individual contributes 1 record and dates may span >1 calendar year), they can be translated with \texttt{partition.intervals}.
+The sample data exemplify the common practice of pooling years via use of a time scale with a recurrent origin (i.e., dates range from 0 to 365 and individuals contribute 1 record per calendar year).  If data are recorded as ranges of calendar dates (i.e., each individual contributes 1 record and dates may span >1 calendar year), they can be translated with \texttt{partition.intervals}.\\
+
 \end{minipage}
 }\\
 \end{center}
