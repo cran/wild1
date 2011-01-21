@@ -3,3 +3,55 @@ v. 1.06--Review draft submitted for approval by USGS.
 v. 1.07--Approved release provided via CRAN.
 
 v. 1.08--Revised to improve generality of 'partition.intervals'
+
+v. 2.00--Upgraded functions for home range analysis.
+
+	 Hereafter, home ranges will be represented by the 
+         "Polygons" class from package "sp."
+         This standard will promotes integration of methods for
+         analysis and plotting.
+
+	 Package "gpclib," which is subject to license restrictions
+         is now suggested rather than required.	
+
+	 New functions for home range estimation:
+
+	   'ud.kde' for estimation of utilization distributions
+
+           'hr.kde' for extraction of kernel density home range contours
+
+  	   'hr.mcp' for minimum convex polygon home ranges (revised
+               version of function from v. 1.08; use of the new version
+               [strongly recommended] will require changes in dependent 
+               code)
+	
+
+	 Data manipulation
+
+	   'drop.holes' extracts "Polygons" that are not holes  
+
+	   'gpc.to.Poly' constructs objects of class "Polygons" from
+               objects of class "gpc.poly"
+
+  	   'point.in.Poly' applies 'point.in.Poly' to "Polygons" objects
+  
+           'Poly.to.gpc' constructs objects of class "gpc.poly" from 
+               objects of class "Polygons"
+
+	   'restrict.domain' for limiting the geographic extent of point
+               patterns represented by vectors, matrices, or data frames
+
+	   'trim.xy' identifies outermost points in a point pattern
+
+
+	 Graphics
+
+	   'hr.kde,''hr.mcp,' and 'restrict.domain' include flexible high-
+               level plotting routines; 'trim.xy' produces a diagnostic
+               plot 
+	   
+	   'plot.Poly' for plotting "Polygons" objects
+
+	   
+        
+ 

@@ -1,6 +1,6 @@
 citHeader("To cite package 'wild1' in publications use:")
 
-inst <- "USGS Northern Prairie Wildlife Research Center"
+inst <- "U.S. Geological Survey Northern Prairie Wildlife Research Center"
 add <- "Jamestown, ND, USA"
 desc <- packageDescription("wild1")
 year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
@@ -13,6 +13,6 @@ citEntry(entry="Manual",
               note = vers,
               institution = inst ,
               address = add,
-         textVersion=paste("Sargeant, G. A. ", year,". ", "wild1: R tools for wildlife research and management. ", vers, ". ",inst,",",add,".",sep=""))
+         textVersion=paste("Sargeant, G. A. ", year,". ", "wild1: R tools for wildlife research and management. ", vers, ". ",inst,",",add,"."," <http://cran.r-project.org/web/packages/wild1/index.html>",sep=""))
                     
-citFooter("Generalizing my work for use by others takes time and effort.  Please cite 'wild1' if you use it for analysis!")
+citFooter("Generalizing work for use by others takes time and effort.  Please cite 'wild1' if you use it for analysis!")

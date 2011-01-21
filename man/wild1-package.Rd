@@ -12,16 +12,17 @@ Provides classes, methods, and examples for use in wildlife research and managem
 \tabular{ll}{
 Package: \tab wild1\cr
 Type: \tab Package\cr
-Version: \tab 1.08\cr
-Date: \tab 2010-12-03\cr
+Version: \tab 1.09\cr
+Date: \tab 2010-01-21\cr
 License: \tab GPL-3 \cr
 LazyLoad: \tab yes\cr
 }
 }
 \author{
-Glen A. Sargeant
-
-U.S. Geological Survey
+Glen A. Sargeant\cr
+U.S. Geological Survey\cr
+Northern Prairie Wildlife Research Center\cr
+\email{glen_sargeant@usgs.gov}
 
 Maintainer: \email{glen_sargeant@usgs.gov}
 }

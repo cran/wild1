@@ -33,34 +33,27 @@ options(SweaveHooks=list(fig=function()
 par(mar=c(5.1, 4.1, 1.1, 2.1))))
 @
 
-\title{Using \texttt{csm} to estimate cause-specific\\ mortality from left-truncated data}
-\author{Glen A. Sargeant\\[0.10cm]
-USGS Northern Prairie Wildlife Research Center\\[0.10cm]
+\title{Using \texttt{csm} to Estimate Cause-specific\\ Mortality from Left-truncated Data}
+\author{Glen A. Sargeant\thanks{U.S. Geological Survey Northern Prairie Wildlife Research Center}\\[0.10cm]
 \texttt{gsargeant@usgs.gov}\\}
 
 \maketitle
 
-Heisey and Patterson (2006) provided S-Plus code to facilitate estimation of cause-specific mortality from left-truncated survival records (''staggered entry'' in wildlife literature).  Package \textsf{wild1} includes an implementation of their nonparametric cumulative incidence function estimator (function \texttt{csm}), which produces objects of a new class (''\texttt{csm}'').  The package also includes methods for the new class and several functions that facilitate tasks commonly associated with wildlife survival analysis.  This vignette demonstrates an application of the package to the coyote survival data used for examples presented by Heisey and Patterson (2006).\\
+Heisey and Patterson (2006) provided S-Plus code to facilitate estimation of cause-specific mortality from left-truncated survival records (''staggered entry'' in wildlife literature).  Package \textsf{wild1} includes an implementation of their nonparametric cumulative incidence function estimator (function \texttt{csm}), which produces objects of a new class (''\texttt{csm}'').  The package also includes methods for the new class and several functions that facilitate tasks commonly associated with wildlife survival analysis.  This vignette demonstrates an application of the package to the coyote survival data used for examples presented by Heisey and Patterson (2006).
 
 \section*{Software}
-Package \textsf{wild1} and required supporting packages must be installed prior to use.  To install \textsf{wild1}, copy the file \texttt{wild1.zip} (available at \url{http://www.npwrc.usgs.gov/staff/sargeant.htm}) to your preferred location, initiate an R session, and use the pull-down "Packages" menu (\texttt{\textsl{Packages>Install package(s) from local zip files}}).\\
-
-See the package DESCRIPTION file for a current list of required supporting packages (available from CRAN, the Comprehensive R Archive Network, via the pull-down "Packages" menu).\\ 
-
-Installed packages must be loaded at the start of each R session or they will not be available for use.  Either \texttt{require()} or \texttt{library()} may be used to load \textsf{wild1}.  Loading \textsf{wild1} will automatically load supporting packages.
-<<results=hide>>= 
-require(wild1)
-@
+Package \emph{wild1} is available from the Comprehensive R Archive Network (CRAN; \url{http://cran.r-project.org/}.  See the \emph{R Installation and Administration} manual (accessible from the pull-down "Help" menu in R) for installation instructions.
 
 \section*{Loading and summarizing data}
 This example features coyote survival data originally analyzed by Patterson (1999) and Heisey and Patterson (2006).  The data are provided in \textsf{wild1}, courtesy of Brent Patterson, Ontario Ministry of Natural Resources.\\
 
-The data must be loaded prior to use:
-<<>>=
+The package and data must be loaded prior to use:
+<<results=hide>>=
+require(wild1)
 data(coyote.mort)
 @ 
 
-Next we will summarize the structure of the data, noting the names, coding, and classes of variables, and print a sample of records.  For our purposes (analysis with \texttt{csm}), times of entry and exit must be represented by numeric vectors, integer vectors, or vectors of class ''\texttt{chron}.''  Events must be indicated by numeric, integer, or logical vectors.  Fates may be represented by numeric vectors, character vectors, or factors. This flexibility of coding facilitates the representation of data by classes that are most appropriate for other planned uses.
+First we will summarize the structure of the data, noting the names, coding, and classes of variables, and print a sample of records.  For our purposes (analysis with \texttt{csm}), times of entry and exit must be represented by numeric vectors, integer vectors, or vectors of class ''\texttt{chron}.''  Events must be indicated by numeric, integer, or logical vectors.  Fates may be represented by numeric vectors, character vectors, or factors. This flexibility of coding facilitates the representation of data by classes that are most appropriate for other planned uses.
 
 <<>>=
 str(coyote.mort,strict.width="cut")

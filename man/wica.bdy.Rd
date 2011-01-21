@@ -2,13 +2,13 @@
 \alias{wica.bdy}
 \docType{data}
 \title{
-Boundary of Wind Cave National Park
+National Park Boundary
 }
 \description{
-An object of class \code{SpatialPolygonsDataFrame}\{\pkg{sp}\} representing the boundary of Wind Cave National Park
+A sample object of class "\code{SpatialPolygonsDataFrame}"\{\pkg{sp}\} representing the boundary of Wind Cave National Park
 }
 \format{
-Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+Formal class "\code{SpatialPolygonsDataFrame}" [package "sp"] with 5 slots
 }
 \usage{data(wica.bdy)}
 \source{
